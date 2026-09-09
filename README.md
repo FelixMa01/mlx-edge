@@ -1,5 +1,8 @@
 # mlx-edge
 
+[![CI](https://github.com/FelixMa01/mlx-edge/actions/workflows/ci.yml/badge.svg)](https://github.com/FelixMa01/mlx-edge/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 CLI-first local LLM inference for Apple Silicon via MLX. OpenAI-compatible server with **preflight guardrails** baked in.
 
 ## Why
