@@ -10,9 +10,15 @@ from rich.console import Console
 from rich.table import Table
 
 from mlx_edge import __version__
-from mlx_edge.autoswap import SwapDecision, decide as autoswap_decide
-from mlx_edge.health import EngineState, fetch_health, fetch_models
-from mlx_edge.preflight import DEFAULT_MAX_CONTEXT_WINDOW, DEFAULT_MAX_TOKENS, check_prompt, estimate_tokens
+from mlx_edge.autoswap import SwapDecision
+from mlx_edge.autoswap import decide as autoswap_decide
+from mlx_edge.health import fetch_health, fetch_models
+from mlx_edge.preflight import (
+    DEFAULT_MAX_CONTEXT_WINDOW,
+    DEFAULT_MAX_TOKENS,
+    check_prompt,
+    estimate_tokens,
+)
 
 app = typer.Typer(help="CLI-first local LLM inference for Apple Silicon via MLX.")
 console = Console()
@@ -26,7 +32,9 @@ def version() -> None:
 
 @app.command()
 def doctor(
-    base_url: str = typer.Option("http://localhost:1234", help="OpenAI-compatible base URL"),
+    base_url: str = typer.Option(
+        "http://localhost:1234", help="OpenAI-compatible base URL"
+    ),
 ) -> None:
     """Check whether a local server is reachable and report engine state."""
     state = fetch_health(base_url)
@@ -91,10 +99,12 @@ def config_init(
     }
     try:
         import yaml  # type: ignore[import-not-found]
+
         with open(output, "w") as f:
             yaml.safe_dump(cfg, f, sort_keys=False)
     except ImportError:
         import json
+
         with open(output, "w") as f:
             json.dump(cfg, f, indent=2)
         console.print(f"[yellow]⚠[/] PyYAML not installed; wrote JSON to {output}")
@@ -105,10 +115,14 @@ def config_init(
 @app.command()
 def run(
     prompt: str = typer.Argument(..., help="Prompt to send"),
-    base_url: str = typer.Option("http://localhost:1234", help="OpenAI-compatible base URL"),
+    base_url: str = typer.Option(
+        "http://localhost:1234", help="OpenAI-compatible base URL"
+    ),
     model: str | None = typer.Option(None, "--model", help="Override model id"),
     memory: float = typer.Option(16.0, "--memory", help="Available RAM in GB"),
-    no_stream: bool = typer.Option(False, "--no-stream", help="Disable streaming (wait for full reply)"),
+    no_stream: bool = typer.Option(
+        False, "--no-stream", help="Disable streaming (wait for full reply)"
+    ),
 ) -> None:
     """Pre-flight check, then send a prompt and print the response."""
     pre = check_prompt(prompt, available_memory_gb=memory)
@@ -128,7 +142,11 @@ def run(
         payload["model"] = model
 
     if no_stream:
-        r = httpx.post(f"{base_url}/v1/chat/completions", json={**payload, "stream": False}, timeout=120)
+        r = httpx.post(
+            f"{base_url}/v1/chat/completions",
+            json={**payload, "stream": False},
+            timeout=120,
+        )
         r.raise_for_status()
         content = r.json()["choices"][0]["message"]["content"]
         console.print(content)
@@ -158,8 +176,12 @@ def run(
 
 @app.command()
 def autoswap(
-    base_url: str = typer.Option("http://localhost:1234", help="OpenAI-compatible base URL"),
-    json_output: bool = typer.Option(False, "--json", help="Emit JSON instead of pretty output"),
+    base_url: str = typer.Option(
+        "http://localhost:1234", help="OpenAI-compatible base URL"
+    ),
+    json_output: bool = typer.Option(
+        False, "--json", help="Emit JSON instead of pretty output"
+    ),
 ) -> None:
     """Inspect /health and recommend a model swap if memory is tight."""
     state = fetch_health(base_url)

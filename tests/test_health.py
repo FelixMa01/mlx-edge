@@ -7,6 +7,7 @@ from mlx_edge.health import EngineState, fetch_health
 
 def test_fetch_health_unreachable():
     import httpx
+
     with patch("mlx_edge.health.httpx.get") as mock_get:
         mock_get.side_effect = httpx.ConnectError("connection refused")
         assert fetch_health("http://nope:9999") is None
@@ -25,7 +26,7 @@ def test_fetch_health_ok():
         },
     }
     fake.raise_for_status = Mock()
-    with patch("mlx_edge.health.httpx.get", return_value=fake) as mock_get:
+    with patch("mlx_edge.health.httpx.get", return_value=fake):
         state = fetch_health()
         assert state is not None
         assert isinstance(state, EngineState)

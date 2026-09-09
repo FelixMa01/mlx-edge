@@ -57,6 +57,7 @@ def chat_stream(
                 break
             try:
                 import json
+
                 obj = json.loads(data)
                 delta = obj.get("choices", [{}])[0].get("delta", {}).get("content")
                 if delta:

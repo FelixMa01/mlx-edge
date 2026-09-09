@@ -1,10 +1,12 @@
 """Tests for auto-swap policy."""
 
-from mlx_edge.autoswap import SwapPolicy, decide, DEFAULT_LADDER
+from mlx_edge.autoswap import DEFAULT_LADDER, decide
 from mlx_edge.health import EngineState
 
 
-def _state(memory_gb: float, ceiling_gb: float, model: str | None = "qwen3-4b-4bit") -> EngineState:
+def _state(
+    memory_gb: float, ceiling_gb: float, model: str | None = "qwen3-4b-4bit"
+) -> EngineState:
     return EngineState(
         model_count=4,
         loaded_count=1,

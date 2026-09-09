@@ -16,6 +16,7 @@ from mlx_edge.health import EngineState
 @dataclass(frozen=True)
 class SwapPolicy:
     """Memory thresholds (fraction of ceiling) for swapping to smaller models."""
+
     warn_at: float = 0.5
     swap_at: float = 0.7
     block_at: float = 0.9

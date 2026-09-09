@@ -32,7 +32,9 @@ def check_mlx_lm_available() -> tuple[bool, str]:
     return True, "mlx-lm available"
 
 
-def build_serve_command(spec: ServeSpec, *, extra_args: list[str] | None = None) -> list[str]:
+def build_serve_command(
+    spec: ServeSpec, *, extra_args: list[str] | None = None
+) -> list[str]:
     """Compose the mlx-lm serve command. The prefill clamp is baked in here."""
     cmd = [
         sys.executable,

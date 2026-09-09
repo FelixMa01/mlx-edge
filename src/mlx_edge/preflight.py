@@ -15,7 +15,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-
 # Conservative defaults that worked on M5 Air 16GB with qwen3-4b-4bit.
 DEFAULT_MAX_CONTEXT_WINDOW = 32768
 DEFAULT_MAX_TOKENS = 16384
