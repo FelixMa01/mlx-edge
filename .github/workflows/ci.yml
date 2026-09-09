@@ -45,8 +45,8 @@ jobs:
       - name: Lint (ruff)
         run: |
           uv pip install ruff
-          ruff check src/ tests/
-          ruff format --check src/ tests/
+          .venv/bin/ruff check src/ tests/
+          .venv/bin/ruff format --check src/ tests/
 
   build:
     name: build wheel
