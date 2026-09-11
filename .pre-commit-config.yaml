@@ -1,0 +1,14 @@
+# Install:
+#   uv pip install pre-commit
+#   pre-commit install
+#
+# Runs ruff lint + format check on every commit. Same rules as CI.
+# Skip with `git commit --no-verify` if needed.
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
